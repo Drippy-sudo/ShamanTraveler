@@ -49,6 +49,12 @@ protected:
 
 	void ResetPlayersControlMode();
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void InControlMode();
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void OutControlMode();
+
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UBoxComponent* BoxComp;

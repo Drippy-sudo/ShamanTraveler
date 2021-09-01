@@ -86,6 +86,8 @@ void AVerticleSliderPlatform::OnOverlapBegin(UPrimitiveComponent* OverlappedComp
 	// Set player in control mode
 	PlayerRef->SetControlMode(true);
 
+	InControlMode();
+
 	// Set 2 second timer for when it ends
 	GetWorldTimerManager().SetTimer(ControlTimerHandle, this, &AVerticleSliderPlatform::ResetPlayersControlMode, ControlTime, false);
 }
@@ -96,6 +98,7 @@ void AVerticleSliderPlatform::ResetPlayersControlMode()
 	PlayerRef->SetControlMode(false);
 	WasHit = false;
 	CanMove = false;
+	OutControlMode();
 	GetWorldTimerManager().ClearTimer(ControlTimerHandle);
 }
 
