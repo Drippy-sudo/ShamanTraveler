@@ -27,6 +27,7 @@ APlayerPaperCharacter::APlayerPaperCharacter()
 	MoveValue = 0.0f;
 	ClampedVelocity = -300.0f;
 	PlayerTimeDialationVar = 0.0f;
+	Mana = 0.0f;
 }
 
 void APlayerPaperCharacter::BeginPlay()

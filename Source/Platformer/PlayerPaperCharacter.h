@@ -73,6 +73,12 @@ public:
 
 	int ControlIndex;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	float Mana;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float ManaCap = 100.0f;
+
 	class APlatformerPlayerController* PlayerControllerRef;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
