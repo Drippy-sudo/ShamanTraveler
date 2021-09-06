@@ -24,9 +24,13 @@ public:
 	void CheckPlayerVelocity();
 	bool CheckIfPlayerIsJumping();
 	void UpdateAnimation();
+	void Ultimate();
 
 	void SetControlMode(bool Query);
 	FORCEINLINE int GetControlIndex() { return ControlIndex; }
+
+protected:
+	class USphereComponent* UltimateSphereComp;
 
 protected:
 	virtual void BeginPlay() override;
@@ -37,8 +41,13 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void UpdateJumpingAnimation();
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void SpawnUltimateFX();
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	float ClampedVelocity;
+
+	void SwitchOffUltimateCollision();
 
 public:
 	APlayerPaperCharacter();
@@ -58,6 +67,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float WallSlidingSpeed;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Ultimate")
+	float UltimateDuration;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	bool IsTouchingFront;
@@ -83,4 +95,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool CanMove;
+
+	FTimerHandle UltimateTimerHandle;
 };

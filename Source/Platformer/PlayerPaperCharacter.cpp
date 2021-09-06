@@ -10,9 +10,15 @@
 #include "Math/NumericLimits.h"
 #include "Kismet/GameplayStatics.h"
 #include "PlatformerPlayerController.h"
+#include "Components/SphereComponent.h"
 
 APlayerPaperCharacter::APlayerPaperCharacter()
 {
+	UltimateSphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("Ultimate Sphere Comp"));
+	UltimateSphereComp->SetupAttachment(RootComponent);
+
+	UltimateSphereComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 	IsRunning = false;
 	IsJumping = false;
 	IsTouchingFront = false;
@@ -28,6 +34,7 @@ APlayerPaperCharacter::APlayerPaperCharacter()
 	ClampedVelocity = -300.0f;
 	PlayerTimeDialationVar = 0.0f;
 	Mana = 0.0f;
+	UltimateDuration = 0.5f;
 }
 
 void APlayerPaperCharacter::BeginPlay()
@@ -44,9 +51,11 @@ void APlayerPaperCharacter::SetupPlayerInputComponent(class UInputComponent* Pla
 
 	PlayerInputComponent->BindAxis("MoveRight", this, &APlayerPaperCharacter::MoveRight);
 	PlayerInputComponent->BindAxis("ControlIndex", this, &APlayerPaperCharacter::ControlAxis);
+
 	
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+	PlayerInputComponent->BindAction("Ultimate", IE_Pressed, this, &APlayerPaperCharacter::Ultimate);
 }
 
 void APlayerPaperCharacter::Tick(float DeltaTime)
@@ -82,6 +91,24 @@ void APlayerPaperCharacter::Tick(float DeltaTime)
 			PlayerMovement->GravityScale = 1.0f;
 		}
 	}
+}
+
+void APlayerPaperCharacter::Ultimate()
+{
+	if (Mana != ManaCap) return;
+
+	UltimateSphereComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+
+	SpawnUltimateFX();
+
+	GetWorldTimerManager().SetTimer(UltimateTimerHandle, this, &APlayerPaperCharacter::SwitchOffUltimateCollision, UltimateDuration, false);
+
+	UE_LOG(LogTemp, Warning, TEXT("Pressed ultimate"));
+}
+
+void APlayerPaperCharacter::SwitchOffUltimateCollision()
+{
+	UltimateSphereComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void APlayerPaperCharacter::UpdateAnimation()
