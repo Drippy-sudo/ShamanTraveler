@@ -30,6 +30,7 @@ public:
 	FORCEINLINE int GetControlIndex() { return ControlIndex; }
 
 protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	class USphereComponent* UltimateSphereComp;
 
 protected:
@@ -48,6 +49,8 @@ protected:
 	float ClampedVelocity;
 
 	void SwitchOffUltimateCollision();
+
+	FVector GetRollingResistance();
 
 public:
 	APlayerPaperCharacter();
@@ -96,5 +99,20 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool CanMove;
 
+	UPROPERTY(EditDefaultsOnly)
+	float GravityScaleWhilstWallSliding;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float Mass;
+
+	// Higher means more rolling resistance.
+	UPROPERTY(EditDefaultsOnly)
+	float RollingResistanceCoefficient = 0.015f;
+
+	UPROPERTY(EditAnywhere)
+	float MaxMovingForce = 100.0f;
+
+	UCharacterMovementComponent* PlayerMovementComp;
+	UWorld* World;
 	FTimerHandle UltimateTimerHandle;
 };

@@ -35,6 +35,8 @@ APlayerPaperCharacter::APlayerPaperCharacter()
 	PlayerTimeDialationVar = 0.0f;
 	Mana = 0.0f;
 	UltimateDuration = 0.5f;
+	GravityScaleWhilstWallSliding = 2.0f;
+	Mass = 100.0f;
 }
 
 void APlayerPaperCharacter::BeginPlay()
@@ -43,6 +45,8 @@ void APlayerPaperCharacter::BeginPlay()
 
 	PlayerTimeDialationVar = this->GetActorTimeDilation();
 	PlayerControllerRef = Cast<APlatformerPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	PlayerMovementComp = Cast<UCharacterMovementComponent>(GetMovementComponent());
+	World = GetWorld();
 }
 
 void APlayerPaperCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -76,39 +80,47 @@ void APlayerPaperCharacter::Tick(float DeltaTime)
 	if (IsWallSliding)
 	{
 		FVector Vel = GetVelocity();
-		UCharacterMovementComponent* PlayerMovement = Cast<UCharacterMovementComponent>(GetMovementComponent());
-		if (PlayerMovement != nullptr)
+		PlayerMovementComp = Cast<UCharacterMovementComponent>(GetMovementComponent());
+		if (PlayerMovementComp != nullptr)
 		{
-			PlayerMovement->GravityScale = 0.0f;
+			PlayerMovementComp->GravityScale = 0.0f;
 			Vel.Z = FMath::Clamp(Vel.Z, ClampedVelocity, 0.0f);
 		}
 	}
 	else
 	{
-		UCharacterMovementComponent* PlayerMovement = Cast<UCharacterMovementComponent>(GetMovementComponent());
-		if (PlayerMovement != nullptr)
+		PlayerMovementComp = Cast<UCharacterMovementComponent>(GetMovementComponent());
+		if (PlayerMovementComp != nullptr)
 		{
-			PlayerMovement->GravityScale = 1.0f;
+			PlayerMovementComp->GravityScale = GravityScaleWhilstWallSliding;
 		}
 	}
 }
 
 void APlayerPaperCharacter::Ultimate()
 {
-	if (Mana != ManaCap) return;
+	if (Mana >= ManaCap)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Pressed ultimate"));
 
-	UltimateSphereComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+		UltimateSphereComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 
-	SpawnUltimateFX();
+		SpawnUltimateFX();
 
-	GetWorldTimerManager().SetTimer(UltimateTimerHandle, this, &APlayerPaperCharacter::SwitchOffUltimateCollision, UltimateDuration, false);
-
-	UE_LOG(LogTemp, Warning, TEXT("Pressed ultimate"));
+		GetWorldTimerManager().SetTimer(UltimateTimerHandle, this, &APlayerPaperCharacter::SwitchOffUltimateCollision, UltimateDuration, false);
+	}
 }
 
 void APlayerPaperCharacter::SwitchOffUltimateCollision()
 {
 	UltimateSphereComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+}
+
+FVector APlayerPaperCharacter::GetRollingResistance()
+{
+	float AccelerationDueToGravity = -GetWorld()->GetGravityZ() / 100;
+	float NormalForce = Mass * AccelerationDueToGravity;
+	return -GetVelocity().GetSafeNormal() * RollingResistanceCoefficient * NormalForce;
 }
 
 void APlayerPaperCharacter::UpdateAnimation()
