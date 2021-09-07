@@ -114,6 +114,10 @@ void APlayerPaperCharacter::Ultimate()
 void APlayerPaperCharacter::SwitchOffUltimateCollision()
 {
 	UltimateSphereComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	Mana = 0.0f;
+
+	UE_LOG(LogTemp, Warning, TEXT("Ultimate worn off"));
 }
 
 FVector APlayerPaperCharacter::GetRollingResistance()
