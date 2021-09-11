@@ -180,7 +180,10 @@ void APlayerPaperCharacter::CheckPlayerVelocity()
 
 void APlayerPaperCharacter::MoveRight(float Value)
 {
-	if (CanMove == false) return;
+	if (CanMove == false)
+	{
+		return;
+	}
 
 	if (IsWallSliding)
 	{
@@ -214,8 +217,6 @@ void APlayerPaperCharacter::ControlAxis(float Value)
 		// Reset
 		ControlIndex = 0;
 	}
-
-	UE_LOG(LogTemp, Warning, TEXT("Control Index = %i"), ControlIndex);
 }
 
 void APlayerPaperCharacter::SetControlMode(bool Query)
@@ -229,6 +230,8 @@ void APlayerPaperCharacter::SetControlMode(bool Query)
 
 		if (PlayerControllerRef)
 			PlayerControllerRef->SetIsTimeSlow(true);
+
+		UE_LOG(LogTemp, Warning, TEXT("In Control Mode..."));
 	}
 	else
 	{
@@ -237,5 +240,7 @@ void APlayerPaperCharacter::SetControlMode(bool Query)
 
 		if (PlayerControllerRef)
 			PlayerControllerRef->SetIsTimeSlow(false);
+
+		UE_LOG(LogTemp, Warning, TEXT("Out Control Mode..."));
 	}
 }

@@ -2,9 +2,6 @@
 
 #include "BaseInteractableBlock.h"
 
-#include "Components/BoxComponent.h"
-#include "PaperFlipbookComponent.h"
-
 // Sets default values
 ABaseInteractableBlock::ABaseInteractableBlock()
 {
@@ -23,20 +20,3 @@ ABaseInteractableBlock::ABaseInteractableBlock()
 	BoxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Comp"));
 	BoxComp->SetupAttachment(PaperFlipbookComponent);
 }
-
-// Called when the game starts or when spawned
-void ABaseInteractableBlock::BeginPlay()
-{
-	Super::BeginPlay();
-	
-
-}
-
-// Called every frame
-void ABaseInteractableBlock::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-
-}
-
