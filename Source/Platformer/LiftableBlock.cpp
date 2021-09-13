@@ -66,8 +66,6 @@ void ALiftableBlock::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor*
 
 	// Set 2 second timer for when it ends
 	GetWorldTimerManager().SetTimer(ControlTimerHandle, this, &ALiftableBlock::ResetPlayersControlMode, ControlTime, false);
-
-	UE_LOG(LogTemp, Warning, TEXT("Test"));
 }
 
 void ALiftableBlock::ResetPlayersControlMode()
@@ -90,7 +88,7 @@ void ALiftableBlock::ResetPlayersControlMode()
 void ALiftableBlock::Move(float DeltaTime)
 {
 	FVector StartLocation = GetActorLocation();
-
+	
 	SetActorRelativeLocation(FMath::Lerp(StartLocation, DesiredLocation, Speed * DeltaTime));
 }
 
@@ -114,9 +112,8 @@ void ALiftableBlock::Tick(float DeltaTime)
 		&& PlayerRef->GetControlIndex() == 1.0f)
 	{
 		Switch = true;
-		if (GetActorLocation().Z <= TargetLocation.Z)
+		if (StaticMeshComp->GetComponentLocation().Z <= TargetLocation.Z)
 		{
-
 			DesiredLocation = GetActorLocation();
 			DesiredLocation.Z += Distance;
 			Move(DeltaTime);
@@ -133,5 +130,6 @@ void ALiftableBlock::Tick(float DeltaTime)
 		Switch = false;
 	}
 
-	UE_LOG(LogTemp, Warning, TEXT("%f"), GetActorLocation().Z);
+	UE_LOG(LogTemp, Warning, TEXT("Static mesh component: %f"), StaticMeshComp->GetComponentLocation().Z);
+	UE_LOG(LogTemp, Warning, TEXT("Target location: %f"), TargetLocation.Z);
 }
