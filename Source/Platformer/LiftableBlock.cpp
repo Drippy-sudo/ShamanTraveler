@@ -25,6 +25,7 @@ ALiftableBlock::ALiftableBlock()
 
 	bIsTargeted = false;
 	bIsInSlowFallMode = false;
+	HasBeenTargeted = false;
 }
 
 void ALiftableBlock::BeginPlay()
@@ -46,6 +47,8 @@ void ALiftableBlock::BeginPlay()
 
 void ALiftableBlock::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	if (HasBeenTargeted) return;
+
 	if (PlayerRef == nullptr)
 	{
 		return;
@@ -80,9 +83,9 @@ void ALiftableBlock::ResetPlayersControlMode()
 	}
 
 	PlayerRef->SetControlMode(false);
-	bIsTargeted = false;
 	OutControlMode();
 	GetWorldTimerManager().ClearTimer(ControlTimerHandle);
+	HasBeenTargeted = true;
 }
 
 void ALiftableBlock::Move(float DeltaTime)
@@ -129,7 +132,4 @@ void ALiftableBlock::Tick(float DeltaTime)
 		SetSlowFallMode();
 		Switch = false;
 	}
-
-	UE_LOG(LogTemp, Warning, TEXT("Static mesh component: %f"), StaticMeshComp->GetComponentLocation().Z);
-	UE_LOG(LogTemp, Warning, TEXT("Target location: %f"), TargetLocation.Z);
 }

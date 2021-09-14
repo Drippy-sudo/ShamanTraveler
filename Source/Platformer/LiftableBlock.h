@@ -64,6 +64,7 @@ protected:
 	APlayerPaperCharacter* PlayerRef;
 
 	bool bIsTargeted;
+	bool HasBeenTargeted;
 
 	FTimerHandle ControlTimerHandle;
 

@@ -29,6 +29,6 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UBoxComponent* BoxComp;
 
-	UPROPERTY(VisibleAnywhere)
-	UPaperFlipbookComponent* PaperFlipbookComponent;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	//UPaperFlipbookComponent* PaperFlipbookComponent;
 };

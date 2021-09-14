@@ -14,9 +14,9 @@ ABaseInteractableBlock::ABaseInteractableBlock()
 	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Static Mesh Comp"));
 	StaticMeshComp->SetupAttachment(RootComp);
 
-	PaperFlipbookComponent = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("Paper Flipbook Comp"));
-	PaperFlipbookComponent->SetupAttachment(StaticMeshComp);
+	//PaperFlipbookComponent = CreateDefaultSubobject<UPaperFlipbookComponent>(TEXT("Paper Flipbook Comp"));
+	//PaperFlipbookComponent->SetupAttachment(RootComp);
 
 	BoxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Box Comp"));
-	BoxComp->SetupAttachment(PaperFlipbookComponent);
+	BoxComp->SetupAttachment(StaticMeshComp);
 }
