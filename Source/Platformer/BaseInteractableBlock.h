@@ -26,7 +26,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* StaticMeshComp;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	UBoxComponent* BoxComp;
 
 	//UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
