@@ -182,6 +182,10 @@ void APlayerPaperCharacter::MoveRight(float Value)
 {
 	if (CanMove == false)
 	{
+		APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+		if (PlayerController)
+			DisableInput(PlayerController);
+
 		return;
 	}
 
