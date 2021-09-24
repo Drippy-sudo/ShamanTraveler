@@ -69,6 +69,8 @@ void ALiftableBlock::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor*
 
 	// Set 2 second timer for when it ends
 	GetWorldTimerManager().SetTimer(ControlTimerHandle, this, &ALiftableBlock::ResetPlayersControlMode, ControlTime, false);
+
+	UE_LOG(LogTemp, Warning, TEXT("There has been a collision..."));
 }
 
 void ALiftableBlock::ResetPlayersControlMode()
