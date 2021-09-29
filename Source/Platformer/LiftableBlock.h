@@ -74,4 +74,5 @@ public:
 
 private:
 	FVector DesiredLocation;
+	bool Switch = false;
 };

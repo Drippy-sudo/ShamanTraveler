@@ -111,8 +111,6 @@ void ALiftableBlock::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	static bool Switch = false;
-
 	if (bIsTargeted 
 		&& PlayerRef->GetControlIndex() == 1.0f)
 	{
